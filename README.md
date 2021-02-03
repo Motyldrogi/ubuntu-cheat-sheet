@@ -16,7 +16,7 @@ mysql_secure_installation
 
 mysql<br>
 CREATE USER 'username'@'localhost' IDENTIFIED BY 'password';<br><br>
-GRANT CREATE, ALTER, DROP, INSERT, UPDATE, DELETE, SELECT, REFERENCES, RELOAD on *.* TO 'username'@'localhost' WITH GRANT OPTION;<br><br>
+GRANT CREATE, ALTER, DROP, INSERT, UPDATE, DELETE, SELECT, REFERENCES, RELOAD on &ast;.&ast; TO 'username'@'localhost' WITH GRANT OPTION;<br><br>
 FLUSH PRIVILEGES;<br>
 exit
 
