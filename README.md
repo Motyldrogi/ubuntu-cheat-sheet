@@ -28,9 +28,9 @@ mysqladmin -p -u username version
 ## MongoDB
 curl -fsSL https://www.mongodb.org/static/pgp/server-4.4.asc | sudo apt-key add -<br><br>
 echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu focal/mongodb-org/4.4 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-4.4.list<br><br>
-apt update
-apt install mongodb-org
-systemctl start mongod.service
+apt update<br>
+apt install mongodb-org<br>
+systemctl start mongod.service<br>
 systemctl enable mongod
 
 ### MongoDB Test
