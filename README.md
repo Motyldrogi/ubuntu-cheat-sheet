@@ -11,6 +11,15 @@ usermod -aG sudo username
 ufw allow OpenSSH
 ufw enable
 ```
+
+## Key Auth
+```sh
+nano /etc/ssh/sshd_config
+
+PasswordAuthentication no
+ChallengeResponseAuthentication no
+UsePAM yes
+```
 ## MySQL
 ```sh
 apt install mysql-server
