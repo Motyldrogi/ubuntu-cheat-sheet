@@ -300,6 +300,12 @@ ufw allow http
 ufw allow https
 ```
 
+### Finish Installation
+1. Navigate to cloud.example.com
+2. Input Admin Credentials
+3. Folder: /usr/share/nginx/nextcloud-data
+4. Previously created sql credentials
+
 # **Ubuntu 20.04 Commands**
 ### Journal
 ```sh
