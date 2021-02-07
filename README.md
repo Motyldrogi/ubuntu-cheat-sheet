@@ -184,13 +184,23 @@ systemctl restart php7.4-fpm
 ```
 ### PHP Nginx
 ```sh
-location / {
-    try_files $uri $uri/ =404;
-}
+server {
+    listen 80;
+    listen [::]:80;
+    
+    server_name example.com www.example.com;
+    root /var/www/example.com;
 
-location ~ \.php$ {
-    include snippets/fastcgi-php.conf;
-    fastcgi_pass unix:/var/run/php/php7.4-fpm.sock;
+    index index.html index.htm index.php;
+
+    location / {
+        try_files $uri $uri/ =404;
+    }
+
+    location ~ \.php$ {
+        include snippets/fastcgi-php.conf;
+        fastcgi_pass unix:/var/run/php/php7.4-fpm.sock;
+     }
 }
 ```
 </details>
