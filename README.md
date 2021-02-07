@@ -229,6 +229,77 @@ Incoming | IMAP | mail.example.com | 993 | SSL/TLS | Mailbox User
 Incoming | POP3 | mail.example.com | 995 | SSL/TLS | Mailbox User
 Outgoing | SMTP | mail.example.com | 587 | STARTTLS | Mailbox User
 
+## Nextcloud with Nginx
+### PHP Preconf
+```sh
+apt install php-imagick php7.4-common php7.4-mysql php7.4-fpm php7.4-gd php7.4-json php7.4-curl  php7.4-zip php7.4-xml php7.4-mbstring php7.4-bz2 php7.4-intl php7.4-bcmath php7.4-gmp
+
+nano /etc/php/7.4/fpm/php.ini
+memory_limit = 512M
+upload_max_filesize = 512M
+
+nano /etc/php/7.4/fpm/pool.d/www.conf
+clear_env = no
+
+systemctl restart php7.4-fpm
+```
+### MySQL Database
+```sh
+mysql
+CREATE DATABASE nextcloud;
+CREATE USER nextcloud@localhost IDENTIFIED BY 'password';
+GRANT ALL PRIVILEGES ON nextcloud.* TO nextcloud@localhost IDENTIFIED BY 'password';
+FLUSH PRIVILEGES;
+exit
+```
+
+### Install Nextcloud
+```sh
+apt install wget unzip zip -y
+cd /var/www/
+wget https://download.nextcloud.com/server/releases/latest.zip
+unzip latest.zip
+sudo chown -R www-data:www-data /var/www/nextcloud
+rm latest.zip
+
+mkdir /usr/share/nginx/nextcloud-data
+chown www-data:www-data /usr/share/nginx/nextcloud-data -R
+```
+
+### Nginx
+[NGINX CONFIG](cloud.example.com.txt)
+```sh
+nano /etc/nginx/sites-available/cloud.example.com
+
+(put in config from above and change server_name and root folder)
+
+ln -s /etc/nginx/sites-available/cloud.example.com /etc/nginx/sites-enabled/
+nginx -t 
+systemctl restart nginx
+
+certbot --nginx --redirect --staple-ocsp -d cloud.example.com
+```
+
+### HSTS
+```sh
+nano /etc/nginx/sites-available/cloud.example.com
+
+listen 443 ssl http2; # managed by Certbot
+
+(under listen and ssl) >
+add_header Strict-Transport-Security "max-age=31536000" always;
+
+nginx -t
+systemctl reload nginx
+```
+
+### UFW
+```sh
+ufw allow ssh
+ufw allow http
+ufw allow https
+```
+
 # **Ubuntu 20.04 Commands**
 ### Journal
 ```sh
