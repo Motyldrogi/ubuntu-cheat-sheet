@@ -3,16 +3,22 @@
 <details>
   <summary>Basic</summary>
 
-## Basic Conf
+## First start
 ```sh
 apt update
 apt upgrade
 
+ufw allow OpenSSH
+ufw enable
+```
+
+## Sudo User
+```sh
 adduser username
 usermod -aG sudo username
 
-ufw allow OpenSSH
-ufw enable
+(when key auth is enabled, copy key)
+rsync --archive --chown=username:username ~/.ssh /home/username
 ```
 
 ## Key Auth Only
@@ -22,6 +28,9 @@ nano /etc/ssh/sshd_config
 PasswordAuthentication no
 ChallengeResponseAuthentication no
 UsePAM yes
+
+(if only sudo user should be allowed, WARNING: test login with sudo user before disabling)
+PermitRootLogin no
 ```
 
 ## Timezone
