@@ -1,5 +1,8 @@
 # **Ubuntu 20.04 Setup & Installation Commands**
 
+<details>
+  <summary>Basic</summary>
+
 ## Basic Conf
 ```sh
 apt update
@@ -25,6 +28,10 @@ UsePAM yes
 ```sh
 timedatectl set-timezone Europe/Berlin
 ```
+</details>
+
+<details>
+  <summary>MySQL</summary>
 
 ## MySQL
 ```sh
@@ -43,6 +50,10 @@ systemctl enable mysql
 ```sh
 mysqladmin -p -u username version
 ```
+</details>
+<details>
+  <summary>MongoDB</summary>
+    
 ## MongoDB
 ```sh
 curl -fsSL https://www.mongodb.org/static/pgp/server-4.4.asc | sudo apt-key add -
@@ -79,6 +90,11 @@ security:
 
 systemctl restart mongod
 ```
+</details>
+
+<details>
+  <summary>Nginx</summary>
+
 ## Nginx
 ```sh
 apt install nginx
@@ -89,11 +105,6 @@ systemctl enable nginx
 ```sh
 ln -s /etc/nginx/sites-available/example.com /etc/nginx/sites-enabled/
 ```
-## Java
-```sh
-apt install default-jre
-```
-
 ## Nginx Conf Folder
 ```sh
 server {
@@ -126,7 +137,11 @@ if ($host = www.example.com) {
     return 301 https://example.com$request_uri;
 }
 ```
+</details>
 
+<details>
+  <summary>LetsEncrypt</summary>
+    
 ## LetsEncrypt
 ```sh
 apt install certbot python3-certbot-nginx
@@ -138,7 +153,20 @@ certbot --nginx -d example.com -d www.example.com
 systemctl status certbot.timer
 certbot renew --dry-run
 ```
+</details>
 
+<details>
+  <summary>Java</summary>
+    
+## Java
+```sh
+apt install default-jre
+```
+</details>
+
+<details>
+  <summary>PHP</summary>
+    
 ## PHP
 ```sh
 apt-get install php-fpm php-mysql
@@ -165,7 +193,11 @@ location ~ \.php$ {
     fastcgi_pass unix:/var/run/php/php7.4-fpm.sock;
 }
 ```
+</details>
 
+<details>
+  <summary>Mailcow Dockerized</summary>
+    
 ## Mailcow Dockerized
 Type | Host | Value
 --- | --- | ---
@@ -228,6 +260,9 @@ Type | Protocol | Hostname | Port | SSL | Auth
 Incoming | IMAP | mail.example.com | 993 | SSL/TLS | Mailbox User
 Incoming | POP3 | mail.example.com | 995 | SSL/TLS | Mailbox User
 Outgoing | SMTP | mail.example.com | 587 | STARTTLS | Mailbox User
+</details>
+<details>
+  <summary>Nextcloud</summary>
 
 ## Nextcloud with Nginx
 ### PHP Preconf
@@ -305,9 +340,13 @@ ufw allow https
 2. Input Admin Credentials
 3. Folder: /usr/share/nginx/nextcloud-data
 4. Previously created sql credentials
-
+</details>
+<details>
+  <summary>Commands</summary>
+    
 # **Ubuntu 20.04 Commands**
 ### Journal
 ```sh
 journalctl -u service -n 500
 ```
+</details>
