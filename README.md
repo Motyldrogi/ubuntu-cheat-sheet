@@ -222,6 +222,12 @@ TXT Record | dkim._domainkey | v=DKIM1;k=rsa;t=s;s=email;p= [...]
 
 7. Test the rating on mail-tester.com to not get added to blocklists
 
+### Third Party Use
+Type | Protocol | Hostname | Port | SSL | Auth
+--- | --- | --- | --- | --- | ---
+Incoming | IMAP | mail.example.com | 993 | SSL/TLS | Mailbox User
+Outgoing | SMTP | mail.example.com | 587 | STARTTLS | Mailbox User
+
 # **Ubuntu 20.04 Commands**
 ### Journal
 ```sh
