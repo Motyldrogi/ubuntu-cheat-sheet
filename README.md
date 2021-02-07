@@ -1,4 +1,4 @@
-# **Ubuntu 20.04 Setup Commands**
+# **Ubuntu 20.04 Setup & Installation Commands**
 
 ## Basic Conf
 ```sh
@@ -12,7 +12,7 @@ ufw allow OpenSSH
 ufw enable
 ```
 
-## Key Auth
+## Key Auth Only
 ```sh
 nano /etc/ssh/sshd_config
 
@@ -20,6 +20,12 @@ PasswordAuthentication no
 ChallengeResponseAuthentication no
 UsePAM yes
 ```
+
+## Timezone
+```sh
+timedatectl set-timezone Europe/Berlin
+```
+
 ## MySQL
 ```sh
 apt install mysql-server
@@ -86,14 +92,6 @@ ln -s /etc/nginx/sites-available/example.com /etc/nginx/sites-enabled/
 ## Java
 ```sh
 apt install default-jre
-```
-## Timezone
-```sh
-timedatectl set-timezone Europe/Berlin
-```
-## Journal
-```sh
-journalctl -u service -n 300
 ```
 
 ## Nginx Conf Folder
@@ -166,4 +164,66 @@ location ~ \.php$ {
     include snippets/fastcgi-php.conf;
     fastcgi_pass unix:/var/run/php/php7.4-fpm.sock;
 }
+```
+
+## Mailcow Dockerized
+Type | Host | Value
+--- | --- | ---
+A Record | mail | Server-IP
+CNAME Record | autoconfig | mail.example.com
+CNAME Record | autodiscover | mail.example.com
+TXT Record | @ | v=spf1 mx ~all
+TXT Record | _dmarc | v=DMARC1; p=reject; rua=mailto:mailauth-reports@example.com
+MX Record | @ | mail.example.com (Priority 10)
+PTR (Reverse DNS) | Server-IP | mail.example.com
+
+### Mailcow Installation
+```sh
+apt install curl nano git apt-transport-https ca-certificates gnupg2 software-properties-common -y
+
+wget -q https://download.docker.com/linux/ubuntu/gpg -O- | apt-key add -
+add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+
+apt update
+apt install docker-ce docker-ce-cli -y
+
+curl -L https://github.com/docker/compose/releases/download/$(curl -Ls https://www.servercow.de/docker-compose/latest.php)/docker-compose-$(uname -s)-$(uname -m) > /usr/local/bin/docker-compose
+chmod +x /usr/local/bin/docker-compose
+
+cd /opt
+git clone https://github.com/mailcow/mailcow-dockerized
+cd mailcow-dockerized
+./generate_config.sh
+
+docker-compose pull
+docker-compose up -d
+```
+
+### Mailcow Config
+1. Navigate to mail.example.com
+2. Login with admin:moohoo
+3. Edit Administrator details and change password
+4. Click Configuration in top menu > Mail Setup
+5. Domains > Add domain
+6. Mailboxes > Add mailbox
+
+
+### DKIM Config
+1. Configuration > ARC/DKIM keys
+2. Put in domain in input field
+3. DKIM key length > 2048 bits
+4. Click "Add"
+5. Copy whole key starting with v=DKIM1;k=rsa;t=s;s=email;p=
+6. Add following DNS Record
+
+Type | Host | Value
+--- | --- | ---
+TXT Record | dkim._domainkey | v=DKIM1;k=rsa;t=s;s=email;p= [...]
+
+7. Test the rating on mail-tester.com to not get added to blocklists
+
+# **Ubuntu 20.04 Commands**
+### Journal
+```sh
+journalctl -u service -n 500
 ```
