@@ -226,6 +226,7 @@ TXT Record | dkim._domainkey | v=DKIM1;k=rsa;t=s;s=email;p= [...]
 Type | Protocol | Hostname | Port | SSL | Auth
 --- | --- | --- | --- | --- | ---
 Incoming | IMAP | mail.example.com | 993 | SSL/TLS | Mailbox User
+Incoming | POP3 | mail.example.com | 995 | SSL/TLS | Mailbox User
 Outgoing | SMTP | mail.example.com | 587 | STARTTLS | Mailbox User
 
 # **Ubuntu 20.04 Commands**
