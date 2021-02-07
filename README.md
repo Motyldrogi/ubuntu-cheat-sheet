@@ -31,6 +31,8 @@ UsePAM yes
 
 (if only sudo user should be allowed, WARNING: test login with sudo user before disabling)
 PermitRootLogin no
+
+service ssh restart
 ```
 
 ## Timezone
