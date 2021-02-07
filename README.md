@@ -5,7 +5,7 @@
 apt update
 apt upgrade
 
-adduser usernam
+adduser username
 usermod -aG sudo username
 
 ufw allow OpenSSH
@@ -204,7 +204,7 @@ docker-compose up -d
 2. Login with admin:moohoo
 3. Edit Administrator details and change password
 4. Click Configuration in top menu > Mail Setup
-5. Domains > Add domain
+5. Domains > Add domain and restart SOGo
 6. Mailboxes > Add mailbox
 
 
