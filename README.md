@@ -304,7 +304,7 @@ systemctl restart php7.4-fpm
 mysql
 CREATE DATABASE nextcloud;
 CREATE USER nextcloud@localhost IDENTIFIED BY 'password';
-GRANT ALL PRIVILEGES ON nextcloud.* TO nextcloud@localhost IDENTIFIED BY 'password';
+GRANT ALL PRIVILEGES ON nextcloud.* TO 'nextcloud'@'localhost';
 FLUSH PRIVILEGES;
 exit
 ```
