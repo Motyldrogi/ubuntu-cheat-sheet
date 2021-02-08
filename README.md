@@ -363,6 +363,13 @@ ufw allow https
 4. Previously created sql credentials
 5. Untick the box at the bottom that recommends the installation of additional apps
 6. Click "Finish Setup"
+
+### Fix Missing Indexes
+```sh
+cd /var/www/nextcloud/
+sudo -u www-data php occ db:add-missing-indices
+```
+
 </details>
 <details>
   <summary>Commands</summary>
