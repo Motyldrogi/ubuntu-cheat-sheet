@@ -351,6 +351,11 @@ nginx -t
 systemctl reload nginx
 ```
 
+```sh
+ufw allow http
+ufw allow https
+```
+
 ### Finish Installation
 1. Navigate to cloud.example.com
 2. Input Admin Credentials
