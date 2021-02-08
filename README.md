@@ -293,6 +293,8 @@ apt install php-imagick php7.4-common php7.4-mysql php7.4-fpm php7.4-gd php7.4-j
 nano /etc/php/7.4/fpm/php.ini
 memory_limit = 512M
 upload_max_filesize = 512M
+max_input_time 1800
+max_execution_time 1800
 
 nano /etc/php/7.4/fpm/pool.d/www.conf
 clear_env = no
@@ -347,13 +349,6 @@ add_header Strict-Transport-Security "max-age=31536000" always;
 
 nginx -t
 systemctl reload nginx
-```
-
-### UFW
-```sh
-ufw allow ssh
-ufw allow http
-ufw allow https
 ```
 
 ### Finish Installation
