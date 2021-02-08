@@ -361,6 +361,8 @@ ufw allow https
 2. Input Admin Credentials
 3. Folder: /usr/share/nginx/nextcloud-data
 4. Previously created sql credentials
+5. Untick the box at the bottom that recommends the installation of additional apps
+6. Click "Finish Setup"
 </details>
 <details>
   <summary>Commands</summary>
