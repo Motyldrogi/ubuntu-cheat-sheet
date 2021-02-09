@@ -45,9 +45,8 @@ timedatectl set-timezone Europe/Berlin
   <summary>Hardening</summary>
   
 ## OpenSSH
-> Change ssh settings in /etc/ssh/sshd_config add or replace the following lines for security (if key auth already enabled)
-
 ### General
+1. Change ssh settings in /etc/ssh/sshd_config add or replace the following lines for security (if key auth already enabled)
 ```sh
 Protocol 2
 LoginGraceTime 20
@@ -62,7 +61,7 @@ AllowTcpForwarding no
 X11Forwarding no
 ```
 ### Algorithms
-For only secure and unexploitable algorithms add these lines too:
+2. For only secure and unexploitable algorithms add these lines too:
 ```sh
 macs hmac-sha2-512,hmac-sha2-256,umac-128@openssh.com,hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,umac-128-etm@openssh.com
 
@@ -71,6 +70,8 @@ kexalgorithms curve25519-sha256,curve25519-sha256@libssh.org,diffie-hellman-grou
 hostkeyalgorithms ssh-ed25519-cert-v01@openssh.com,sk-ssh-ed25519-cert-v01@openssh.com,rsa-sha2-512-cert-v01@openssh.com,rsa-sha2-256-cert-v01@openssh.com,ssh-ed25519,sk-ssh-ed25519@openssh.com,rsa-sha2-512,rsa-sha2-256
 
 ```
+3. Restart with "service ssh restart"
+
 </details>
 
 <details>
