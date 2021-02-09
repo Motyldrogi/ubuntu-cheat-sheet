@@ -1,4 +1,6 @@
-# **Ubuntu 20.04 Setup & Installation Commands**
+## **Ubuntu 20.04<br>Setup, Installation, Hardening and Commands**
+
+## Setup & Hardening
 
 <details>
   <summary>Basic</summary>
@@ -74,6 +76,8 @@ hostkeyalgorithms ssh-ed25519-cert-v01@openssh.com,sk-ssh-ed25519-cert-v01@opens
 
 </details>
 
+## Database
+
 <details>
   <summary>MySQL</summary>
 
@@ -135,6 +139,8 @@ security:
 systemctl restart mongod
 ```
 </details>
+
+## Webserver
 
 <details>
   <summary>Nginx</summary>
@@ -199,6 +205,8 @@ certbot renew --dry-run
 ```
 </details>
 
+## Languages
+
 <details>
   <summary>Java</summary>
     
@@ -248,6 +256,8 @@ server {
 }
 ```
 </details>
+
+## Software
 
 <details>
   <summary>Mailcow Dockerized</summary>
@@ -326,8 +336,8 @@ apt install php-imagick php7.4-common php7.4-mysql php7.4-fpm php7.4-gd php7.4-j
 nano /etc/php/7.4/fpm/php.ini
 memory_limit = 512M
 upload_max_filesize = 512M
-max_input_time 1800
-max_execution_time 1800
+max_input_time = 1800
+max_execution_time = 1800
 
 nano /etc/php/7.4/fpm/pool.d/www.conf
 clear_env = no
@@ -335,7 +345,7 @@ clear_env = no
 systemctl restart php7.4-fpm
 ```
 ### MySQL Database
-```sh
+```sql
 mysql
 CREATE DATABASE nextcloud;
 CREATE USER nextcloud@localhost IDENTIFIED BY 'password';
@@ -404,12 +414,40 @@ sudo -u www-data php occ db:add-missing-indices
 ```
 
 </details>
+
+## Other
+
 <details>
   <summary>Commands</summary>
     
-# **Ubuntu 20.04 Commands**
-### Journal
+## Journal
 ```sh
 journalctl -u service -n 500
 ```
+</details>
+
+<details>
+  <summary>Systemd Service</summary>
+  
+## Restartable Service
+1. nano /etc/systemd/system/name.service
+```ruby
+[Unit]
+Description=<description>
+After=syslog.target
+
+[Service]
+User=<username>
+ExecStart=/usr/bin/java -jar /home/username/server.jar
+Restart=always
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=your-service
+SuccessExitStatus=143
+
+[Install]
+WantedBy=multi-user.target
+```
+2. systemctl enable name.service 
+3. systemctl start name.service 
 </details>
