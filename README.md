@@ -1,4 +1,4 @@
-## **Ubuntu 20.04<br>Setup, Installation, Hardening and Commands**
+## **Ubuntu 20.04 Server**
 
 ## Setup & Hardening
 
