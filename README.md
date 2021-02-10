@@ -48,32 +48,82 @@ timedatectl set-timezone Europe/Berlin
   
 ## OpenSSH
 ### General
-1. Change ssh settings in /etc/ssh/sshd_config add or replace the following lines for security (if key auth already enabled)
 ```sh
+nano /etc/ssh/sshd_config
+Add or change following lines:
+
+HostKey /etc/ssh/ssh_host_rsa_key
+HostKey /etc/ssh/ssh_host_ed25519_key
+
 Protocol 2
 LoginGraceTime 20
 PermitRootLogin without-password
 StrictModes yes
 MaxAuthTries 3
+
 PasswordAuthentication no
 ChallengeResponseAuthentication no
 UsePAM yes
+
 AllowAgentForwarding no
 AllowTcpForwarding no
 X11Forwarding no
 ```
-### Algorithms
-2. For only secure and unexploitable algorithms add these lines too:
+
+### Create new and more secure host keys
+
 ```sh
-macs hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,umac-128-etm@openssh.com
+rm /etc/ssh/ssh_host_*
 
-kexalgorithms curve25519-sha256,curve25519-sha256@libssh.org,diffie-hellman-group-exchange-sha256,diffie-hellman-group16-sha512,diffie-hellman-group18-sha512
+ssh-keygen -t rsa -b 4096 -f /etc/ssh/ssh_host_rsa_key -N ""
 
-hostkeyalgorithms ssh-ed25519-cert-v01@openssh.com,sk-ssh-ed25519-cert-v01@openssh.com,rsa-sha2-512-cert-v01@openssh.com,rsa-sha2-256-cert-v01@openssh.com,ssh-ed25519,sk-ssh-ed25519@openssh.com,rsa-sha2-512,rsa-sha2-256
-
+ssh-keygen -t ed25519 -f /etc/ssh/ssh_host_ed25519_key -N ""
 ```
-3. Restart with "service ssh restart"
 
+### Small Diffie-Hellman removal
+```sh
+awk '$5 >= 3071' /etc/ssh/moduli > /etc/ssh/moduli.safe
+
+mv /etc/ssh/moduli.safe /etc/ssh/moduli
+```
+
+### Only secure and unexploitable Algorithms
+```sh
+nano /etc/ssh/sshd_config.d/ssh-hardening.conf
+Add to the file:
+
+KexAlgorithms curve25519-sha256,curve25519-sha256@libssh.org,diffie-hellman-group16-sha512,diffie-hellman-group18-sha512,diffie-hellman-group-exchange-sha256
+Ciphers chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr
+MACs hmac-sha2-256-etm@openssh.com,hmac-sha2-512-etm@openssh.com,umac-128-etm@openssh.com
+HostKeyAlgorithms ssh-ed25519,ssh-ed25519-cert-v01@openssh.com,sk-ssh-ed25519@openssh.com,sk-ssh-ed25519-cert-v01@openssh.com,rsa-sha2-256,rsa-sha2-512,rsa-sha2-256-cert-v01@openssh.com,rsa-sha2-512-cert-v01@openssh.com
+```
+1. Test with: sshd -T
+2. Restart with: service ssh restart
+
+</details>
+
+<details>
+  <summary>Fail2ban</summary>
+  
+## Installation
+  
+  ```sh
+apt install fail2ban
+
+cp /etc/fail2ban/jail.conf /etc/fail2ban/jail.local
+nano /etc/fail2ban/jail.local
+
+Change these lines:
+[sshd]
+enabled = true
+
+bantime = 24h
+findtime = 1h
+maxretry = 3
+
+service fail2ban restart
+  ```
+  
 </details>
 
 ## Database
@@ -423,6 +473,16 @@ sudo -u www-data php occ db:add-missing-indices
 ## Journal
 ```sh
 journalctl -u service -n 500
+```
+
+## List open ports
+```sh
+netstat -tulpn
+```
+
+## Show Services
+```sh
+service --status-all
 ```
 </details>
 
