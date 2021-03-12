@@ -50,7 +50,7 @@ timedatectl set-timezone Europe/Berlin
 ### General
 ```sh
 nano /etc/ssh/sshd_config
-Add or change following lines:
+Add or change following lines if key auth is enabled:
 
 HostKey /etc/ssh/ssh_host_rsa_key
 HostKey /etc/ssh/ssh_host_ed25519_key
